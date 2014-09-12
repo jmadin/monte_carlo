@@ -1,6 +1,8 @@
 MonteCarlo2::Application.routes.draw do
   resources :tests
 
+  get "home/index"
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -48,6 +50,7 @@ MonteCarlo2::Application.routes.draw do
   #   end
   #   resources :posts, concerns: :toggleable
   #   resources :photos, concerns: :toggleable
+  root :to => 'tests#index'
 
   # Example resource route within a namespace:
   #   namespace :admin do
