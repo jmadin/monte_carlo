@@ -1,31 +1,32 @@
-<h1>Listing tests</h1>
+<h1>Monte Carlo randomisation test for comparing two samples</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Sheltered</th>
-      <th>Exposed</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+<p>Upload your data using the link below.</p>
 
-  <tbody>
-    <% @tests.each do |test| %>
-      <tr>
-        <td><%= test.name %></td>
-        <td><%= test.sheltered %></td>
-        <td><%= test.exposed %></td>
-        <td><%= link_to 'Show', test %></td>
-        <td><%= link_to 'Edit', edit_test_path(test) %></td>
-        <td><%= link_to 'Destroy', test, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Sample 1</th>
+    <th>Sample 2</th>
+    <th></th>
+  </tr>
+
+
+<% @tests.each do |test| %>
+  <tr>
+    <td><%= test.name %></td>
+    <td><%= test.sheltered %></td>
+    <td><%= test.exposed %></td>
+    <td>
+      <div class="btn-group">
+        <%= link_to 'Run test', test, class: "btn btn-default", data: { no_turbolink: true } %>
+        <%= link_to 'Edit data', edit_test_path(test), class: "btn btn-default" %>
+        <%= link_to 'Delete data', test, :method => :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      </div>
+    </td>
+  </tr>
+<% end %>
 </table>
 
-<br>
+<br />
 
-<%= link_to 'New Test', new_test_path %>
+<%= link_to 'Upload your data', new_test_path, class: "btn btn-default" %>

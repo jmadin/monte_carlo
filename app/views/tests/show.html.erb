@@ -2,13 +2,15 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <p id="notice"><%= notice %></p>
-<%= link_to 'Edit data', edit_test_path(@test) %> |
-<%= link_to 'Home', tests_path %>
+<div class="btn-group">
+  <%= link_to 'Edit data', edit_test_path(@test), class: "btn btn-default" %>
+  <%= link_to 'Home', tests_path, class: "btn btn-default" %>
+</div>
 
 <p>
   <%= form_tag test_path(@test), :method => 'get' do %>
     To re-run the randomisation, just reload your web browser or select test:<%= select_tag :tail, options_for_select(['1-tailed', '2-tailed'], params[:tail]), { onchange: "$(this).parent('form').submit();" } %>
-    <%= submit_tag "Reload" %>
+    <%= submit_tag "Reload", class: "btn btn-default" %>
   <% end %>
 </p>
 

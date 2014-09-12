@@ -1,29 +1,33 @@
-<%= form_for(@test) do |f| %>
-  <% if @test.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@test.errors.count, "error") %> prohibited this test from being saved:</h2>
+<div class="row">
+  <div class="col-md-6">
+    <%= form_for(@test) do |f| %>
+      <% if @test.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@test.errors.count, "error") %> prohibited this test from being saved:</h2>
 
-      <ul>
-      <% @test.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+          <ul>
+          <% @test.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :sheltered %><br>
-    <%= f.text_area :sheltered %>
-  </div>
-  <div class="field">
-    <%= f.label :exposed %><br>
-    <%= f.text_area :exposed %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+      <div class="form-group">
+        <%= f.label :name %><br>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :sheltered %><br>
+        <%= f.text_area :sheltered, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :exposed %><br>
+        <%= f.text_area :exposed, class: "form-control" %>
+      </div>
+
+      <%= f.submit "Submit", class: "btn btn-default" %>
+
+    <% end %>
+</div>
+</div>
