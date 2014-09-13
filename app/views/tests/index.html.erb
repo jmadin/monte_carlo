@@ -1,32 +1,45 @@
 <h1>Monte Carlo randomisation test for comparing two samples</h1>
 
-<p>Upload your data using the link below.</p>
+<div class="row">
+  <div class="col-sm-12">
+    <%= link_to 'Upload your data', new_test_path, class: "btn btn-primary" %>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-sm-12">
+    <ul class="list-group">
 
-<table class="table">
-  <tr>
-    <th>Name</th>
-    <th>Sample 1</th>
-    <th>Sample 2</th>
-    <th></th>
-  </tr>
+      <% @tests.each do |test| %>
 
+        <li class="list-group-item">              
+          <div class="row">
+            <div class="col-sm-1" style="color: lightgrey;">
+              <%= test.id %>
+            </div>
 
-<% @tests.each do |test| %>
-  <tr>
-    <td><%= test.name %></td>
-    <td><%= test.sheltered %></td>
-    <td><%= test.exposed %></td>
-    <td>
-      <div class="btn-group">
-        <%= link_to 'Run test', test, class: "btn btn-default", data: { no_turbolink: true } %>
-        <%= link_to 'Edit data', edit_test_path(test), class: "btn btn-default" %>
-        <%= link_to 'Delete data', test, :method => :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-      </div>
-    </td>
-  </tr>
-<% end %>
-</table>
+            <div class="col-sm-2">
+              <%= test.name %>
+            </div>
 
-<br />
+            <div class="col-sm-3">
+              <%= test.sheltered %>
+            </div>
 
-<%= link_to 'Upload your data', new_test_path, class: "btn btn-default" %>
+            <div class="col-sm-3">
+              <%= test.exposed %>
+            </div>
+
+            <div class="col-sm-3">
+              <div class="btn-group">
+                <%= link_to 'Run test', test, class: "btn btn-default", data: { no_turbolink: true } %>
+                <%= link_to 'Edit', edit_test_path(test), class: "btn btn-default" %>
+                <%= link_to 'Delete', test, :method => :delete, data: { confirm: "Are you sure?  Don't delete other peoples' data!" }, class: "btn btn-danger" %>
+              </div>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -1,11 +1,77 @@
-<h2>Randomisation test for <%= @test.name %>'s data</h2>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<h1>Data for <%= @test.name %></h1>
 
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-sm-12">
+    <ul class="list-group">
+      <li class="list-group-item">              
+        <div class="row">
+          <div class="col-sm-3">
+            <strong>Sample 1</strong>
+          </div>
+          <div class="col-sm-1">
+            <strong>Mean 1</strong>
+          </div>
+          <div class="col-sm-3">
+            <strong>Sample 2</strong>
+          </div>
+          <div class="col-sm-1">
+            <strong>Mean 2</strong>
+          </div>
+          <div class="col-sm-2">
+            <% if params[:tail] == "1-tailed" %>
+              <strong>(Mean 2 - Mean 1)</strong>
+            <% else %>
+              <strong>Absolute (Mean 2 - Mean 1)</strong>
+            <% end %>
+          </div>
+          <div class="col-sm-2">
+          </div>
+        </div>
+      </li>
+
+
+      <% shelt = @test.sheltered.split( /, */ ).map { |s| s.to_f } %>
+      <% shelt_mean = shelt.inject(0.0) { |sum, el| sum + el } / shelt.size %>
+
+      <% expos = @test.exposed.split( /, */ ).map { |s| s.to_f } %>
+      <% expos_mean = expos.inject(0.0) { |sum, el| sum + el } / expos.size %>
+
+      <% diff = (expos_mean - shelt_mean) %>
+
+      <li class="list-group-item">              
+        <div class="row">
+          <div class="col-sm-3">
+            <%= shelt %>
+          </div>
+          <div class="col-sm-1">
+            <%= shelt_mean.round(3) %>
+          </div>
+          <div class="col-sm-3">
+            <%= expos %>
+          </div>
+          <div class="col-sm-1">
+            <%= expos_mean.round(3) %>
+          </div>
+          <div class="col-sm-2">
+            <% if params[:tail] == "1-tailed" %>
+              <%= diff.round(3) %>
+            <% else %>
+              <%= diff.abs.round(3) %>
+            <% end %>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
 <div class="btn-group">
   <%= link_to 'Edit data', edit_test_path(@test), class: "btn btn-default" %>
   <%= link_to 'Home', tests_path, class: "btn btn-default" %>
 </div>
+
+<h1>Randomisation test</h1>
+
 
 <p>
   <%= form_tag test_path(@test), :method => 'get' do %>
@@ -17,80 +83,97 @@
 <p><strong>2-tailed:</strong> Are the sample means different?</p>
 <p><strong>1-tailed:</strong> Is Sample 2 mean greater than Sample 1 mean?</p>
 
-<h3>Original data</h3>
 
-<table>
-<% if params[:tail] == "1-tailed" %>
-  <tr><th>Sample 1</th><th>Mean 1</th><th>Sample 2</th><th>Mean 2</th><th>(Mean 2 - Mean 1)</th></tr>
-<% else %>
-  <tr><th>Sample 1</th><th>Mean 1</th><th>Sample 2</th><th>Mean 2</th><th>Absolute (Mean 2 - Mean 1)</th></tr>
-<% end %>
 
-<% shelt = @test.sheltered.split( /, */ ).map { |s| s.to_f } %>
-<% shelt_mean = shelt.inject(0.0) { |sum, el| sum + el } / shelt.size %>
-
-<% expos = @test.exposed.split( /, */ ).map { |s| s.to_f } %>
-<% expos_mean = expos.inject(0.0) { |sum, el| sum + el } / expos.size %>
-
-<% diff = (expos_mean - shelt_mean) %>
-
-<tr><td style="background:lightgrey;max-width:300px;word-wrap: break-word;"><%= shelt %></td><td style="min-width:100px;text-align:center;"><%= shelt_mean.round(3) %></td><td style="background:lightgrey;max-width:300px;word-wrap: break-word;"><%= expos %></td><td style="min-width:100px;text-align:center;"><%= expos_mean.round(3) %></td><td style="background:black;color:white;text-align:center;">
-  <% if params[:tail] == "1-tailed" %>
-    <%= diff.round(3) %>
-  <% else %>
-    <%= diff.abs.round(3) %>
-  <% end %>
-</td></tr>
-
-</table>
 
 <% samps = 10000 %>
 <% store = [] %>
 <% store_mn = [] %>
 
-<hr>
-<h3>First 10 random draws</h3>
+<h2>First 10 random draws</h2>
 
-<table>
-<% if params[:tail] == "1-tailed" %>
-  <tr><th>Sample 1</th><th>Mean 1</th><th>Sample 2</th><th>Mean 2</th><th>(Mean 2 - Mean 1)</th><th>Greater than original difference?</th></tr>
-<% else %>
-  <tr><th>Sample 1</th><th>Mean 1</th><th>Sample 2</th><th>Mean 2</th><th>Absolute (Mean 2 - Mean 1)</th><th>Greater than original difference?</th></tr>
-<% end %>
+<div class="row">
+  <div class="col-sm-12">
+    <ul class="list-group">
+      <li class="list-group-item">              
+        <div class="row">
+          <div class="col-sm-3">
+            <strong>Sample 1</strong>
+          </div>
+          <div class="col-sm-1">
+            <strong>Mean 1</strong>
+          </div>
+          <div class="col-sm-3">
+            <strong>Sample 2</strong>
+          </div>
+          <div class="col-sm-1">
+            <strong>Mean 2</strong>
+          </div>
+          <div class="col-sm-2">
+            <% if params[:tail] == "1-tailed" %>
+              <strong>(Mean 2 - Mean 1)</strong>
+            <% else %>
+              <strong>Absolute (Mean 2 - Mean 1)</strong>
+            <% end %>
+          </div>
+          <div class="col-sm-1">
+            <strong>Greater than original difference?</strong>
+          </div>
+        </div>
+      </li>
 
-<% (1..samps).each do |i| %>
-  <% mc = (shelt + expos).sample((shelt + expos).length) %>
-  
-  <% s1 = mc[0..(shelt.length - 1)] %>
-  <% s2 = mc[shelt.length..(mc.length - 1)] %>
+      <% (1..samps).each do |i| %>
+        <% mc = (shelt + expos).sample((shelt + expos).length) %>
+        
+        <% s1 = mc[0..(shelt.length - 1)] %>
+        <% s2 = mc[shelt.length..(mc.length - 1)] %>
 
-  <% mean_s1 = (s1.inject(0.0) { |sum, el| sum + el } / s1.size) %>
-  <% mean_s2 = (s2.inject(0.0) { |sum, el| sum + el } / s2.size) %>
+        <% mean_s1 = (s1.inject(0.0) { |sum, el| sum + el } / s1.size) %>
+        <% mean_s2 = (s2.inject(0.0) { |sum, el| sum + el } / s2.size) %>
 
-  <% store << mean_s1 - mean_s2 %>
+        <% store << mean_s1 - mean_s2 %>
 
-  <% a = shelt.size.times.map{ rand(shelt.length) }.map{|i| shelt[i]}.inject{|sum,x| sum + x } / shelt.size %>
-  <% b = expos.size.times.map{ rand(expos.length) }.map{|i| expos[i]}.inject{|sum,x| sum + x } / expos.size %>
+        <% a = shelt.size.times.map{ rand(shelt.length) }.map{|i| shelt[i]}.inject{|sum,x| sum + x } / shelt.size %>
+        <% b = expos.size.times.map{ rand(expos.length) }.map{|i| expos[i]}.inject{|sum,x| sum + x } / expos.size %>
 
-  <% store_mn << b - a %>
+        <% store_mn << b - a %>
 
-
-  <% if i <= 10 %>
-    <tr><td style="background:lightgrey;max-width:300px;word-wrap: break-word;"><%= s1 %></td><td style="min-width:100px;text-align:center;"><%= mean_s1.round(3) %></td><td style="background:lightgrey;max-width:300px;word-wrap: break-word;"><%= s2 %></td><td style="min-width:100px;text-align:center;"><%= mean_s2.round(3) %></td><td style="background:black;color:white;text-align:center;">
-    <% if params[:tail] == "1-tailed" %>
-      <%= (mean_s2 - mean_s1).round(3) %>
-      </td><td style="text-align:center;">
-      <%= (mean_s2 - mean_s1) >= diff %>
-    <% else %>
-      <%= (mean_s2 - mean_s1).abs.round(3) %>
-      </td><td style="text-align:center;">
-      <%= (mean_s2 - mean_s1).abs >= diff.abs %>
-    <% end %>
-    </td></tr>
-  <% end %>
-  
-<% end %>
-</table>
+        <% if i <= 10 %>
+          <li class="list-group-item">              
+            <div class="row">
+              <div class="col-sm-3">
+                <%= s1 %>
+              </div>
+              <div class="col-sm-1">
+                <%= mean_s1.round(3) %>
+              </div>
+              <div class="col-sm-3">
+                <%= s2 %>
+              </div>
+              <div class="col-sm-1">
+                <%= mean_s2.round(3) %>
+              </div>
+              <div class="col-sm-2">
+                <% if params[:tail] == "1-tailed" %>
+                  <%= (mean_s2 - mean_s1).round(3) %>
+                <% else %>
+                  <%= (mean_s2 - mean_s1).abs.round(3) %>
+                <% end %>
+              </div>
+              <div class="col-sm-2">
+                <% if params[:tail] == "1-tailed" %>
+                  <%= (mean_s2 - mean_s1) >= diff %>
+                <% else %>
+                  <%= (mean_s2 - mean_s1).abs >= diff.abs %>
+                <% end %>
+              </div>
+            </div>
+          </li>
+        <% end %>  
+      <% end %>
+    </ul>
+  </div>
+</div>
 
 <% if params[:tail] == "1-tailed" %>
   <% store_abs = store.map { |s| s } %>
@@ -135,17 +218,16 @@
 <p><strong>Upper 2.5%:</strong> <%= store_mn[0..9].sort[0.975 * 10].round(4) %></p>
 
 
-<hr>
-<h3>First 100 random draws</h3>
+<h2>First 100 random draws</h2>
 
 <% if params[:tail] == "1-tailed" %>
   <p>No of random resamples where absolute difference between means is greater than observed absolute difference between means = <%= store_abs[0..99].map { |s| s >= diff_abs}.count(true) %></p>
   <p>Total no of random resamples = 100</p>
-  <p><strong>p(10 draws) =</strong> <%= ((store_abs[0..99].map { |s| s >= diff_abs}).count(true) / 100.to_f).round(4) %></p>
+  <p><strong>p(100 draws) =</strong> <%= ((store_abs[0..99].map { |s| s >= diff_abs}).count(true) / 100.to_f).round(4) %></p>
 <% else %>
   <p><strong>No of random resamples where (Mean 2 - Mean 1) is greater than observed (Mean 2 - Mean 1) =</strong> <%= store_abs[0..99].map { |s| s >= diff_abs}.count(true) %></p>
   <p><strong>Total no of random resamples =</strong> 100</p>
-  <p><strong>p(10 draws) =</strong> <%= ((store_abs[0..99].map { |s| s >= diff_abs}).count(true) / 100.to_f).round(4) %></p>
+  <p><strong>p(100 draws) =</strong> <%= ((store_abs[0..99].map { |s| s >= diff_abs}).count(true) / 100.to_f).round(4) %></p>
 <% end %>
 
 <script type="text/javascript">
@@ -172,17 +254,16 @@
 <p><strong>Lower 2.5%:</strong> <%= store_mn[0..99].sort[0.025 * 100].round(4) %></p>
 <p><strong>Upper 2.5%:</strong> <%= store_mn[0..99].sort[0.975 * 100].round(4) %></p>
 
-<hr>
-<h3>First 1000 random draws</h3>
+<h2>First 1000 random draws</h2>
 
 <% if params[:tail] == "1-tailed" %>
   <p>No of random resamples where absolute difference between means is greater than observed absolute difference between means = <%= store_abs[0..999].map { |s| s >= diff_abs}.count(true) %></p>
   <p>Total no of random resamples = 1000</p>
-  <p><strong>p(10 draws) =</strong> <%= ((store_abs[0..999].map { |s| s >= diff_abs}).count(true) / 1000.to_f).round(4) %></p>
+  <p><strong>p(1000 draws) =</strong> <%= ((store_abs[0..999].map { |s| s >= diff_abs}).count(true) / 1000.to_f).round(4) %></p>
 <% else %>
   <p><strong>No of random resamples where (Mean 2 - Mean 1) is greater than observed (Mean 2 - Mean 1) =</strong> <%= store_abs[0..999].map { |s| s >= diff_abs}.count(true) %></p>
   <p><strong>Total no of random resamples =</strong> 1000</p>
-  <p><strong>p(10 draws) =</strong> <%= ((store_abs[0..999].map { |s| s >= diff_abs}).count(true) / 1000.to_f).round(4) %></p>
+  <p><strong>p(1000 draws) =</strong> <%= ((store_abs[0..999].map { |s| s >= diff_abs}).count(true) / 1000.to_f).round(4) %></p>
 <% end %>
 
 <script type="text/javascript">
@@ -210,17 +291,16 @@
 <p><strong>Upper 2.5%:</strong> <%= store_mn[0..999].sort[0.975 * 1000].round(4) %></p>
 
 
-<hr>
-<h3>First 10000 random draws</h3>
+<h2>First 10000 random draws</h2>
 
 <% if params[:tail] == "1-tailed" %>
   <p>No of random resamples where absolute difference between means is greater than observed absolute difference between means = <%= store_abs[0..9999].map { |s| s >= diff_abs}.count(true) %></p>
   <p>Total no of random resamples = 10000</p>
-  <p><strong>p(10 draws) =</strong> <%= ((store_abs[0..9999].map { |s| s >= diff_abs}).count(true) / 10000.to_f).round(4) %></p>
+  <p><strong>p(10000 draws) =</strong> <%= ((store_abs[0..9999].map { |s| s >= diff_abs}).count(true) / 10000.to_f).round(4) %></p>
 <% else %>
   <p><strong>No of random resamples where (Mean 2 - Mean 1) is greater than observed (Mean 2 - Mean 1) =</strong> <%= store_abs[0..9999].map { |s| s >= diff_abs}.count(true) %></p>
   <p><strong>Total no of random resamples =</strong> 10000</p>
-  <p><strong>p(10 draws) =</strong> <%= ((store_abs[0..9999].map { |s| s >= diff_abs}).count(true) / 10000.to_f).round(4) %></p>
+  <p><strong>p(10000 draws) =</strong> <%= ((store_abs[0..9999].map { |s| s >= diff_abs}).count(true) / 10000.to_f).round(4) %></p>
 <% end %>
 
 <script type="text/javascript">
